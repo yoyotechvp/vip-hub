@@ -12,6 +12,9 @@ export default function MerchantPage() {
   const [newLevel, setNewLevel] = useState({ name: '', 权益: '' });
   const [newRule, setNewRule] = useState({ amount: 0, bonus_points: 0 });
   const [merchantUsers, setMerchantUsers] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [chargeAmount, setChargeAmount] = useState(0);
+  const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
   useEffect(() => {
     fetchMerchants();
@@ -98,6 +101,19 @@ export default function MerchantPage() {
     });
     setNewRule({ amount: 0, bonus_points: 0 });
     fetchRechargeRules();
+  };
+
+  const handleCharge = async () => {
+    if (!selectedMerchant || !selectedUser || !selectedItem || chargeAmount <= 0) return;
+    await fetch('/api/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: selectedUser, merchant_id: selectedMerchant, type: 'charge', amount: chargeAmount, item_id: selectedItem })
+    });
+    setChargeAmount(0);
+    setSelectedItem(null);
+    setSelectedUser(null);
+    fetchMerchantUsers();
   };
 
   return (
@@ -281,7 +297,7 @@ export default function MerchantPage() {
 
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">用户管理</h2>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto mb-4">
               <table className="min-w-full">
                 <thead>
                   <tr className="bg-gray-100">
@@ -289,6 +305,7 @@ export default function MerchantPage() {
                     <th className="px-4 py-2 text-left">余额</th>
                     <th className="px-4 py-2 text-left">积分</th>
                     <th className="px-4 py-2 text-left">等级</th>
+                    <th className="px-4 py-2 text-left">操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -298,11 +315,51 @@ export default function MerchantPage() {
                       <td className="px-4 py-2">¥{user.balance.toFixed(2)}</td>
                       <td className="px-4 py-2">{user.points}</td>
                       <td className="px-4 py-2">{user.level_name || '普通'}</td>
+                      <td className="px-4 py-2">
+                        <button
+                          onClick={() => setSelectedUser(user.user_id)}
+                          className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition text-sm"
+                        >
+                          扣费
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            
+            {selectedUser && (
+              <div className="border-t pt-4">
+                <h3 className="text-lg font-semibold mb-3">用户扣费</h3>
+                <div className="flex space-x-2 mb-3">
+                  <select
+                    value={selectedItem || ''}
+                    onChange={(e) => setSelectedItem(parseInt(e.target.value))}
+                    className="flex-1 p-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="">选择扣费项目</option>
+                    {chargeItems.map((item) => (
+                      <option key={item.id} value={item.id}>{item.name} - ¥{item.price.toFixed(2)}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="number"
+                    placeholder="扣费金额"
+                    value={chargeAmount}
+                    onChange={(e) => setChargeAmount(parseFloat(e.target.value))}
+                    className="flex-1 p-2 border border-gray-300 rounded-md"
+                  />
+                  <button
+                    onClick={handleCharge}
+                    className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition"
+                    disabled={!selectedItem || chargeAmount <= 0}
+                  >
+                    确认扣费
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

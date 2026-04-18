@@ -10,9 +10,7 @@ export default function UserPage() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [newUser, setNewUser] = useState('');
   const [rechargeAmount, setRechargeAmount] = useState(0);
-  const [chargeAmount, setChargeAmount] = useState(0);
-  const [selectedItem, setSelectedItem] = useState<number | null>(null);
-  const [chargeItems, setChargeItems] = useState<any[]>([]);
+
 
   useEffect(() => {
     fetchUsers();
@@ -56,12 +54,6 @@ export default function UserPage() {
     setTransactions(data);
   };
 
-  const fetchChargeItems = async () => {
-    const res = await fetch(`/api/charge-items?merchantId=${selectedMerchant}`);
-    const data = await res.json();
-    setChargeItems(data);
-  };
-
   const handleAddUser = async () => {
     if (!newUser) return;
     await fetch('/api/users', {
@@ -81,19 +73,6 @@ export default function UserPage() {
       body: JSON.stringify({ user_id: selectedUser, merchant_id: selectedMerchant, type: 'recharge', amount: rechargeAmount })
     });
     setRechargeAmount(0);
-    fetchUserMerchants();
-    fetchTransactions();
-  };
-
-  const handleCharge = async () => {
-    if (!selectedUser || !selectedMerchant || !selectedItem || chargeAmount <= 0) return;
-    await fetch('/api/transactions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: selectedUser, merchant_id: selectedMerchant, type: 'charge', amount: chargeAmount, item_id: selectedItem })
-    });
-    setChargeAmount(0);
-    setSelectedItem(null);
     fetchUserMerchants();
     fetchTransactions();
   };
@@ -182,37 +161,6 @@ export default function UserPage() {
                   disabled={!selectedMerchant || rechargeAmount <= 0}
                 >
                   充值
-                </button>
-              </div>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4">扣费</h2>
-              <div className="flex space-x-2 mb-4">
-                <select
-                  value={selectedItem || ''}
-                  onChange={(e) => setSelectedItem(parseInt(e.target.value))}
-                  className="flex-1 p-2 border border-gray-300 rounded-md"
-                  disabled={!selectedMerchant}
-                >
-                  <option value="">选择扣费项目</option>
-                  {chargeItems.map((item) => (
-                    <option key={item.id} value={item.id}>{item.name} - ¥{item.price.toFixed(2)}</option>
-                  ))}
-                </select>
-                <input
-                  type="number"
-                  placeholder="扣费金额"
-                  value={chargeAmount}
-                  onChange={(e) => setChargeAmount(parseFloat(e.target.value))}
-                  className="flex-1 p-2 border border-gray-300 rounded-md"
-                  disabled={!selectedMerchant}
-                />
-                <button
-                  onClick={handleCharge}
-                  className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition"
-                  disabled={!selectedMerchant || !selectedItem || chargeAmount <= 0}
-                >
-                  扣费
                 </button>
               </div>
             </div>
