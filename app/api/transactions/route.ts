@@ -35,9 +35,9 @@ export async function POST(request: NextRequest) {
     
     if (type === 'recharge') {
       // 充值逻辑
-      // 查找充值规则
-      const rule = db.prepare('SELECT * FROM recharge_rules WHERE merchant_id = ? AND amount = ?').get(merchant_id, amount);
-      const bonusPoints = rule ? rule.bonus_points : 0;
+      // 查找最接近的充值规则（金额小于等于充值金额的最大规则）
+      const rule = db.prepare('SELECT * FROM recharge_rules WHERE merchant_id = ? AND amount <= ? ORDER BY amount DESC LIMIT 1').get(merchant_id, amount);
+      const bonusPoints = rule ? Math.floor(amount / rule.amount) * rule.bonus_points : 0;
       
       // 更新余额和积分
       db.prepare('UPDATE user_merchants SET balance = balance + ?, points = points + ? WHERE user_id = ? AND merchant_id = ?').run(amount, bonusPoints, user_id, merchant_id);

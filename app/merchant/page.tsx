@@ -11,6 +11,7 @@ export default function MerchantPage() {
   const [newItem, setNewItem] = useState({ name: '', price: 0, type: 'per_time' });
   const [newLevel, setNewLevel] = useState({ name: '', 权益: '' });
   const [newRule, setNewRule] = useState({ amount: 0, bonus_points: 0 });
+  const [merchantUsers, setMerchantUsers] = useState<any[]>([]);
 
   useEffect(() => {
     fetchMerchants();
@@ -21,8 +22,15 @@ export default function MerchantPage() {
       fetchChargeItems();
       fetchMemberLevels();
       fetchRechargeRules();
+      fetchMerchantUsers();
     }
   }, [selectedMerchant]);
+
+  const fetchMerchantUsers = async () => {
+    const res = await fetch(`/api/merchant-users?merchantId=${selectedMerchant}`);
+    const data = await res.json();
+    setMerchantUsers(data);
+  };
 
   const fetchMerchants = async () => {
     const res = await fetch('/api/merchants');
@@ -264,6 +272,32 @@ export default function MerchantPage() {
                     <tr key={rule.id} className="border-t">
                       <td className="px-4 py-2">¥{rule.amount.toFixed(2)}</td>
                       <td className="px-4 py-2">{rule.bonus_points}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">用户管理</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-4 py-2 text-left">用户名称</th>
+                    <th className="px-4 py-2 text-left">余额</th>
+                    <th className="px-4 py-2 text-left">积分</th>
+                    <th className="px-4 py-2 text-left">等级</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {merchantUsers.map((user) => (
+                    <tr key={user.user_id} className="border-t">
+                      <td className="px-4 py-2">{user.user_name}</td>
+                      <td className="px-4 py-2">¥{user.balance.toFixed(2)}</td>
+                      <td className="px-4 py-2">{user.points}</td>
+                      <td className="px-4 py-2">{user.level_name || '普通'}</td>
                     </tr>
                   ))}
                 </tbody>
