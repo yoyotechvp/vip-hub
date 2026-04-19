@@ -9,10 +9,13 @@ export default function ChargeItemsPage() {
   const [newItem, setNewItem] = useState({ name: '', price: 0, type: 'per_time' });
 
   useEffect(() => {
-    fetchChargeItems();
+    if (merchantId) {
+      fetchChargeItems();
+    }
   }, [merchantId]);
 
   const fetchChargeItems = async () => {
+    if (!merchantId) return;
     const res = await fetch(`/api/charge-items?merchantId=${merchantId}`);
     const data = await res.json();
     setChargeItems(data);

@@ -9,10 +9,13 @@ export default function RechargeRulesPage() {
   const [newRule, setNewRule] = useState({ amount: 0, bonus_points: 0 });
 
   useEffect(() => {
-    fetchRechargeRules();
+    if (merchantId) {
+      fetchRechargeRules();
+    }
   }, [merchantId]);
 
   const fetchRechargeRules = async () => {
+    if (!merchantId) return;
     const res = await fetch(`/api/recharge-rules?merchantId=${merchantId}`);
     const data = await res.json();
     setRechargeRules(data);

@@ -13,17 +13,21 @@ export default function UsersPage() {
   const [showChargeModal, setShowChargeModal] = useState(false);
 
   useEffect(() => {
-    fetchMerchantUsers();
-    fetchChargeItems();
+    if (merchantId) {
+      fetchMerchantUsers();
+      fetchChargeItems();
+    }
   }, [merchantId]);
 
   const fetchMerchantUsers = async () => {
+    if (!merchantId) return;
     const res = await fetch(`/api/merchant-users?merchantId=${merchantId}`);
     const data = await res.json();
     setMerchantUsers(data);
   };
 
   const fetchChargeItems = async () => {
+    if (!merchantId) return;
     const res = await fetch(`/api/charge-items?merchantId=${merchantId}`);
     const data = await res.json();
     setChargeItems(data);

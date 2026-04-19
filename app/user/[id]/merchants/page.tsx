@@ -26,8 +26,9 @@ export default function MerchantsPage() {
         {userMerchants.map((um) => (
           <Link
             key={um.merchant_id}
-            href={`/user/${userId}/transactions?merchantId=${um.merchant_id}`}
+            href={userId ? `/user/${userId}/transactions?merchantId=${um.merchant_id}` : '#'}
             className="p-4 border rounded-md hover:border-green-500 hover:bg-green-50 transition touchable"
+            onClick={(e) => !userId && e.preventDefault()}
           >
             <h3 className="font-semibold text-lg">{um.merchant_name}</h3>
             <p className="text-sm">余额: ¥{um.balance.toFixed(2)}</p>

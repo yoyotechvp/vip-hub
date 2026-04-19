@@ -9,10 +9,13 @@ export default function MemberLevelsPage() {
   const [newLevel, setNewLevel] = useState({ name: '', 权益: '' });
 
   useEffect(() => {
-    fetchMemberLevels();
+    if (merchantId) {
+      fetchMemberLevels();
+    }
   }, [merchantId]);
 
   const fetchMemberLevels = async () => {
+    if (!merchantId) return;
     const res = await fetch(`/api/member-levels?merchantId=${merchantId}`);
     const data = await res.json();
     setMemberLevels(data);

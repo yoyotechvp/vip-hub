@@ -34,6 +34,7 @@ export default function TransactionsPage() {
   };
 
   const fetchTransactions = async () => {
+    if (!userId) return;
     const merchantId = selectedMerchant ? `&merchantId=${selectedMerchant}` : '';
     const res = await fetch(`/api/transactions?userId=${userId}${merchantId}`);
     const data = await res.json();
