@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
-export default function RechargeRulesPage({ params }: { params: { id: string } }) {
-  const merchantId = params.id;
+export default function RechargeRulesPage() {
+  const params = useParams();
+  const merchantId = params.id as string;
   const [rechargeRules, setRechargeRules] = useState<any[]>([]);
   const [newRule, setNewRule] = useState({ amount: 0, bonus_points: 0 });
 

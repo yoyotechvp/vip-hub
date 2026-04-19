@@ -1,9 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-export default function MerchantsPage({ params }: { params: { id: string } }) {
-  const userId = params.id;
+export default function MerchantsPage() {
+  const params = useParams();
+  const userId = params.id as string;
   const [userMerchants, setUserMerchants] = useState<any[]>([]);
 
   useEffect(() => {

@@ -13,6 +13,15 @@ export default function UserLayout({
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-6">
       <div className="container">
+        {/* 面包屑导航 */}
+        <div className="mb-4 text-sm">
+          <Link href="/" className="text-gray-600 hover:text-blue-500">首页</Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <Link href="/user" className="text-gray-600 hover:text-blue-500">用户管理</Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <span className="text-gray-900">用户详情</span>
+        </div>
+
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold">用户管理</h1>

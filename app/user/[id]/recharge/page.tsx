@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
-export default function RechargePage({ params }: { params: { id: string } }) {
-  const userId = params.id;
+export default function RechargePage() {
+  const params = useParams();
+  const userId = params.id as string;
   const [allMerchants, setAllMerchants] = useState<any[]>([]);
   const [selectedMerchant, setSelectedMerchant] = useState<number | null>(null);
   const [rechargeAmount, setRechargeAmount] = useState(0);

@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 
-export default function TransactionsPage({ params }: { params: { id: string } }) {
-  const userId = params.id;
+export default function TransactionsPage() {
+  const params = useParams();
+  const userId = params.id as string;
   const searchParams = useSearchParams();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [allMerchants, setAllMerchants] = useState<any[]>([]);
