@@ -39,26 +39,30 @@ export default function MerchantLayout({
         <div className="hidden md:flex mb-6">
           <div className="flex space-x-4">
             <Link
-              href={`/merchant/${merchantId}/charge-items`}
+              href={merchantId ? `/merchant/${merchantId}/charge-items` : '#'}
               className="px-4 py-2 rounded-md bg-blue-500 text-white touchable"
+              onClick={(e) => !merchantId && e.preventDefault()}
             >
               扣费项目
             </Link>
             <Link
-              href={`/merchant/${merchantId}/member-levels`}
+              href={merchantId ? `/merchant/${merchantId}/member-levels` : '#'}
               className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable"
+              onClick={(e) => !merchantId && e.preventDefault()}
             >
               会员等级
             </Link>
             <Link
-              href={`/merchant/${merchantId}/recharge-rules`}
+              href={merchantId ? `/merchant/${merchantId}/recharge-rules` : '#'}
               className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable"
+              onClick={(e) => !merchantId && e.preventDefault()}
             >
               充值规则
             </Link>
             <Link
-              href={`/merchant/${merchantId}/users`}
+              href={merchantId ? `/merchant/${merchantId}/users` : '#'}
               className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable"
+              onClick={(e) => !merchantId && e.preventDefault()}
             >
               用户管理
             </Link>
@@ -68,26 +72,30 @@ export default function MerchantLayout({
         {/* 移动端标签导航 */}
         <div className="md:hidden flex overflow-x-auto mb-6 space-x-2 pb-2">
           <Link
-            href={`/merchant/${merchantId}/charge-items`}
+            href={merchantId ? `/merchant/${merchantId}/charge-items` : '#'}
             className="px-4 py-2 rounded-md bg-blue-500 text-white touchable whitespace-nowrap"
+            onClick={(e) => !merchantId && e.preventDefault()}
           >
             扣费项目
           </Link>
           <Link
-            href={`/merchant/${merchantId}/member-levels`}
+            href={merchantId ? `/merchant/${merchantId}/member-levels` : '#'}
             className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable whitespace-nowrap"
+            onClick={(e) => !merchantId && e.preventDefault()}
           >
             会员等级
           </Link>
           <Link
-            href={`/merchant/${merchantId}/recharge-rules`}
+            href={merchantId ? `/merchant/${merchantId}/recharge-rules` : '#'}
             className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable whitespace-nowrap"
+            onClick={(e) => !merchantId && e.preventDefault()}
           >
             充值规则
           </Link>
           <Link
-            href={`/merchant/${merchantId}/users`}
+            href={merchantId ? `/merchant/${merchantId}/users` : '#'}
             className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable whitespace-nowrap"
+            onClick={(e) => !merchantId && e.preventDefault()}
           >
             用户管理
           </Link>
