@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
-export default function MemberLevelsPage({ params }: { params: { id: string } }) {
-  const merchantId = params.id;
+export default function MemberLevelsPage() {
+  const params = useParams();
+  const merchantId = params.id as string;
   const [memberLevels, setMemberLevels] = useState<any[]>([]);
   const [newLevel, setNewLevel] = useState({ name: '', 权益: '' });
 
