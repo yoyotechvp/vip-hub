@@ -39,20 +39,23 @@ export default function UserLayout({
         <div className="hidden md:flex mb-6">
           <div className="flex space-x-4">
             <Link
-              href={`/user/${userId}/merchants`}
+              href={userId ? `/user/${userId}/merchants` : '#'}
               className="px-4 py-2 rounded-md bg-green-500 text-white touchable"
+              onClick={(e) => !userId && e.preventDefault()}
             >
               商家列表
             </Link>
             <Link
-              href={`/user/${userId}/recharge`}
+              href={userId ? `/user/${userId}/recharge` : '#'}
               className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable"
+              onClick={(e) => !userId && e.preventDefault()}
             >
               充值
             </Link>
             <Link
-              href={`/user/${userId}/transactions`}
+              href={userId ? `/user/${userId}/transactions` : '#'}
               className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable"
+              onClick={(e) => !userId && e.preventDefault()}
             >
               交易记录
             </Link>
@@ -62,20 +65,23 @@ export default function UserLayout({
         {/* 移动端标签导航 */}
         <div className="md:hidden flex overflow-x-auto mb-6 space-x-2 pb-2">
           <Link
-            href={`/user/${userId}/merchants`}
+            href={userId ? `/user/${userId}/merchants` : '#'}
             className="px-4 py-2 rounded-md bg-green-500 text-white touchable whitespace-nowrap"
+            onClick={(e) => !userId && e.preventDefault()}
           >
             商家列表
           </Link>
           <Link
-            href={`/user/${userId}/recharge`}
+            href={userId ? `/user/${userId}/recharge` : '#'}
             className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable whitespace-nowrap"
+            onClick={(e) => !userId && e.preventDefault()}
           >
             充值
           </Link>
           <Link
-            href={`/user/${userId}/transactions`}
+            href={userId ? `/user/${userId}/transactions` : '#'}
             className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 transition touchable whitespace-nowrap"
+            onClick={(e) => !userId && e.preventDefault()}
           >
             交易记录
           </Link>
